@@ -1,0 +1,21 @@
+.center {
+  text-align: center;
+}
+.right {
+  text-align: right;
+}
+.totals h1 {
+  margin-top: 0;
+}
+.categories .highlight {
+  background: #f4f4f4;
+}
+form .form-group, form .form-block {
+  margin-bottom: 0;
+}
+.categories .btn-link {
+  margin-top: 5px;
+}
+.label-overbudget {
+  margin: 0;
+}

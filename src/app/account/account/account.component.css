@@ -1,0 +1,16 @@
+.btn-group-overflow {
+  position: relative !important;
+  top: -1px; /* hacky fix */
+  margin-right: 12px;
+  margin-bottom: -1px; /* hacky fix */  
+}
+.row.odd {
+  background: #f0f0f0;
+}
+.right {
+  display: block;
+  float: right;
+}
+.btn-add {
+  margin-bottom: -16px; /* hacky fix */
+}

@@ -1,0 +1,60 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="wrapper">
+      <h1>{{account?.name}} 
+        <span class="label label-info" *ngIf="account?.type=='debit'">Debit Account</span>
+        <span class="label label-danger" *ngIf="account?.type=='credit'">Credit Account</span>
+        <span class="right">Balance: {{account?.balance | currency:'USD':true:'.2'}}</span>
+      </h1>
+
+      <button type="button" class="btn btn-sm btn-secondary btn-add" (click)="openAdd()" *ngIf="!selected.length"><clr-icon shape="plus"></clr-icon> Add new transaction</button>      
+      <clr-datagrid [(clrDgSelected)]="selected" (clrDgRefresh)="load($event)" [clrDgLoading]="loading">        
+        <clr-dg-action-bar>
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-secondary" *ngIf="selected.length > 0"><clr-icon shape="pencil"></clr-icon> Edit</button>
+            <button type="button" class="btn btn-sm btn-secondary" *ngIf="selected.length > 0"><clr-icon shape="close"></clr-icon> Delete</button>
+          </div>
+          <clr-dropdown class="btn-group-overflow" *ngIf="selected.length > 0 && account.type == 'credit'">
+            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+                  Assign to category
+                  <clr-icon shape="caret down"></clr-icon>
+              </button>
+            <clr-dropdown-menu *clrIfOpen>
+              <button type="button" clrDropdownItem *ngFor="let category of categories">{{category.name}}</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </clr-dg-action-bar>
+
+        <clr-dg-column>Date</clr-dg-column>
+        <clr-dg-column [clrDgField]="'payee'">Payee</clr-dg-column>
+        <clr-dg-column>Amount</clr-dg-column>
+        <clr-dg-column>Category</clr-dg-column>
+        <clr-dg-column>Comment</clr-dg-column>
+
+        <clr-dg-row *ngFor="let item of transactions; trackBy: trackBy" [clrDgItem]="item">
+          <clr-dg-cell>{{item.date}}</clr-dg-cell>
+          <clr-dg-cell>{{item.payee}}</clr-dg-cell>
+          <clr-dg-cell>{{item.amount | currency:'USD':true:'.2'}}</clr-dg-cell>
+          <clr-dg-cell>{{lookupCategory(item.categoryId)}}</clr-dg-cell>
+          <clr-dg-cell>{{item.comment}}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          Showing {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} transactions
+          <clr-dg-pagination #pagination [clrDgTotalItems]="total"></clr-dg-pagination>          
+        </clr-dg-footer>
+      </clr-datagrid>
+
+    </div>
+  </div>
+  <nav class="sidenav">
+    <section class="sidenav-content">
+      <section class="nav-group">
+        <label>Accounts</label>
+        <ul class="nav-list">
+          <li *ngFor="let account of accounts"><a class="nav-link" routerLinkActive="active" routerLink="/accounts/{{account.id}}">{{account.name}}</a></li>
+        </ul>
+      </section>
+    </section>
+  </nav>
+</div>

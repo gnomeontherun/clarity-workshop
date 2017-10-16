@@ -1,0 +1,40 @@
+<div class="content-container">
+  <div class="content-area">
+    <h3>Your Accounts</h3>
+    <div class="row">
+      <div class="col-xs-3" *ngFor="let account of accounts">
+        <a class="card clickable" routerLink="/accounts/{{account.id}}">
+          <div class="card-block">
+            <h3 class="card-title">{{account.name}} 
+              <span class="label label-info" *ngIf="account?.type=='debit'">Debit Account</span>
+              <span class="label label-danger" *ngIf="account?.type=='credit'">Credit Account</span>
+            </h3>
+          </div>
+          <div class="card-block">
+            Balance: {{account.balance | currency:'USD':true:'.2'}}
+          </div>
+        </a>
+      </div>
+    </div>
+    <h3>Recent Transactions</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Payee</th>
+          <th>Amount</th>
+          <th>Account</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions">
+          <td>{{transaction.date}}</td>
+          <td>{{transaction.payee}}</td>
+          <td>{{transaction.amount | currency:'USD':true:'.2'}}</td>
+          <td>{{lookupAccount(transaction.accountId)}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+</div>

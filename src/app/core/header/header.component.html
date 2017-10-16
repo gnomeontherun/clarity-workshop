@@ -1,0 +1,24 @@
+<header class="header-4">
+  <div class="branding">
+      <a routerLink="/" class="nav-link">
+          <clr-icon shape="wallet"></clr-icon>
+          <span class="title">Clarity Ledger</span>
+      </a>
+  </div>
+  <div class="header-nav">
+    <a class="nav-link" routerLink="/accounts" routerLinkActive="active"><span class="nav-text">Accounts</span></a>
+    <a class="nav-link" routerLink="/budget" routerLinkActive="active"><span class="nav-text">Budget</span></a>
+  </div>
+  <div class="header-actions">
+      <a routerLink="/login" class="nav-link nav-text" *ngIf="!userService.user">Login</a>
+      <clr-dropdown *ngIf="userService.user">
+          <button class="nav-text" clrDropdownTrigger>
+              Hello, {{userService.user.name}}
+              <clr-icon shape="caret down"></clr-icon>
+          </button>
+          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+              <a clrDropdownItem (click)="logout()">Log out</a>
+          </clr-dropdown-menu>
+      </clr-dropdown>
+  </div>
+  </header>

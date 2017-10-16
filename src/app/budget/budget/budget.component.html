@@ -1,0 +1,63 @@
+<app-header></app-header>
+<div class="content-container">
+  <div class="content-area">
+    <div class="card totals">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-xs-4 center">Balance</div>
+          <div class="col-xs-4 center">Budgeted</div>
+          <div class="col-xs-4 center">To Budget</div>
+        </div>
+      </div>
+      <div class="card-block row">
+        <div class="col-xs-4 center">
+          <h1>{{budget.balance | currency:'USD':true:'.2'}}</h1>
+        </div>
+        <div class="col-xs-4 center">
+          <h1>{{budget.budgeted | currency:'USD':true:'.2'}}</h1>
+        </div>
+        <div class="col-xs-4 center">
+          <h1>{{budget.balance - budget.budgeted | currency:'USD':true:'.2'}}</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="card categories">
+      <div class="card-header">
+        <button class="btn btn-sm btn-outline">Add Category</button>
+      </div>
+      <div class="card-block">
+        <form>
+          <section class="form-block">
+            <div class="row">
+              <div class="col-xs-3"><label>Category</label></div>
+              <div class="col-xs-2 right"><label>Budgeted</label></div>
+              <div class="col-xs-2 right"><label>Activity</label></div>
+              <div class="col-xs-2 right"><label>Available</label></div>
+              <div class="col-xs-3 right"><label>Actions</label></div>
+            </div>
+            <hr />
+            <div class="form-group row" *ngFor="let category of categories; let i = index; let highlight = odd" [ngClass]="{highlight: highlight}">
+              <div class="col-xs-3">
+                <label>{{category.name}} <span class="label label-warning label-overbudget" *ngIf="category.available < 0">Overbudget!</span></label>
+              </div>
+              <div class="col-xs-2">
+                <input class="form-control right" tabindex="{{i + 1}}" type="number" inputmode="numeric" min="0" [value]="categories[i].budgeted">
+              </div>
+              <div class="col-xs-2 right">
+                <label>{{category.activity | currency:'USD':true:'.2'}}</label>
+              </div>
+              <div class="col-xs-2 right">
+                <label>{{category.available | currency:'USD':true:'.2'}}</label>
+              </div>
+              <div class="col-xs-3 right">
+                <button class="btn btn-sm btn-link">Rename</button>
+                <button class="btn btn-sm btn-link">Delete</button>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
