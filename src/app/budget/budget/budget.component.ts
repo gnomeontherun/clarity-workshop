@@ -20,6 +20,12 @@ export class BudgetComponent implements OnInit {
     budgeted: 0,
     balance: 0
   };
+  // Properties to manage data in forms
+  editing: number;
+  edit: Category = { id: '', name: '' } as Category;
+  categoryEditModal = false;
+  categoryRemoveModal = false;
+  error: any;
 
   constructor(
     private accountsService: AccountsService,
@@ -74,25 +80,79 @@ export class BudgetComponent implements OnInit {
     this.budget.budgeted = this.budget.budgeted / 100;
   }
 
-  /*
-  * How to use service to create a new category
-  */
-  // this.categoriesService
-  //   .update(categoryObject)
-  //   .subscribe((category: Category) => {
-  //     // Category was saved
-  //   }, error => {
-  //     // Category was not saved
-  //   });
+  public editCategory(
+    category: Category = {
+      name: '',
+      id: '',
+      budgeted: 0,
+      available: 0,
+      activity: 0,
+      type: 'credit'
+    }
+  ): void {
+    this.edit = category;
+    this.categoryEditModal = true;
+  }
 
-  /*
-  * How to use service to update a new category
-  */
-  // this.categoriesService
-  //   .update(categoryId, categoryObject)
-  //   .subscribe((category: Category) => {
-  //     // Category was saved
-  //   }, error => {
-  //     // Category was not saved
-  //   });
+  public confirmRemoveCategory(category): void {
+    this.edit = category;
+    this.categoryRemoveModal = true;
+  }
+
+  /**
+   * Close the modal and reset error states
+   */
+  public cancel(): void {
+    this.categoryEditModal = false;
+    this.categoryRemoveModal = false;
+    this.error = null;
+  }
+
+  public removeCategory(): void {
+    this.categoriesService.remove(this.edit.id).subscribe(
+      () => {
+        // Category was removed
+        this.cancel();
+        this.getCategories();
+      },
+      error => {
+        this.error = JSON.parse(error.error);
+      }
+    );
+  }
+
+  /**
+   * Save the currently edited category
+   */
+  public save(): void {
+    if (this.edit.id) {
+      this.categoriesService
+        .update(this.edit.id, this.edit)
+        .subscribe((category: Category) => {
+          // Category was saved
+          this.cancel();
+          this.getCategories();
+        }, error => {
+          this.error = JSON.parse(error.error);
+        });
+    } else {
+      this.categoriesService
+        .create(this.edit)
+        .subscribe((category: Category) => {
+          // Category was created
+          this.cancel();
+          this.getCategories();
+        }, error => {
+          this.error = JSON.parse(error.error);
+        });
+    }
+  }
+
+  /**
+   * Save a category directly without putting it into the modal
+   */
+  public saveCategory(category: Category): void {
+    this.edit = category;
+    this.save();
+  }
 }

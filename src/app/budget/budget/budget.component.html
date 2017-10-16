@@ -24,7 +24,7 @@
 
     <div class="card categories">
       <div class="card-header">
-        <button class="btn btn-sm btn-outline">Add Category</button>
+        <button class="btn btn-sm btn-outline" (click)="editCategory()">Add Category</button>        
       </div>
       <div class="card-block">
         <form>
@@ -42,7 +42,8 @@
                 <label>{{category.name}} <span class="label label-warning label-overbudget" *ngIf="category.available < 0">Overbudget!</span></label>
               </div>
               <div class="col-xs-2">
-                <input class="form-control right" tabindex="{{i + 1}}" type="number" inputmode="numeric" min="0" [value]="categories[i].budgeted">
+                <input class="form-control right" tabindex="{{i + 1}}" inputmode="numeric" min="0" name="budgeted{{i}}" type="number" #input
+                  (click)="input.select()" [(ngModel)]="categories[i].budgeted" (change)="saveCategory(category)">
               </div>
               <div class="col-xs-2 right">
                 <label>{{category.activity | currency:'USD':true:'.2'}}</label>
@@ -51,8 +52,8 @@
                 <label>{{category.available | currency:'USD':true:'.2'}}</label>
               </div>
               <div class="col-xs-3 right">
-                <button class="btn btn-sm btn-link">Rename</button>
-                <button class="btn btn-sm btn-link">Delete</button>
+                <button class="btn btn-sm btn-link" (click)="editCategory(category)">Rename</button>
+                <button class="btn btn-sm btn-link" (click)="confirmRemoveCategory(category)">Delete</button>
               </div>
             </div>
           </section>
@@ -61,3 +62,31 @@
     </div>
   </div>
 </div>
+
+<clr-modal [(clrModalOpen)]="categoryEditModal" [clrModalClosable]="false">
+  <h3 class="modal-title" *ngIf="edit?.id">Edit category name</h3>
+  <h3 class="modal-title" *ngIf="!edit?.id">Add new category</h3>
+  <div class="modal-body">
+    <input type="text" name="category" class="full-width" [(ngModel)]="edit.name" placeholder="Category name" />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="categoryRemoveModal" [clrModalClosable]="false">
+  <h3 class="modal-title" *ngIf="!error">Remove {{edit.name}}?</h3>
+  <h3 class="modal-title" *ngIf="error">Unable to remove {{edit.name}}</h3>
+  <div class="modal-body" *ngIf="!error">
+    Once you delete a category, you cannot get it back.
+  </div>
+  <div class="modal-body" *ngIf="error">
+      {{error.message}}
+    </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="cancel()" *ngIf="!error">Cancel</button>
+    <button type="button" class="btn btn-warning" (click)="removeCategory()" *ngIf="!error">Delete</button>
+    <button type="button" class="btn btn-outline" (click)="cancel()" *ngIf="error">Ok</button>
+  </div>
+</clr-modal>
