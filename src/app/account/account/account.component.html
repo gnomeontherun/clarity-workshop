@@ -11,8 +11,8 @@
       <clr-datagrid [(clrDgSelected)]="selected" (clrDgRefresh)="load($event)" [clrDgLoading]="loading">        
         <clr-dg-action-bar>
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-secondary" *ngIf="selected.length > 0"><clr-icon shape="pencil"></clr-icon> Edit</button>
-            <button type="button" class="btn btn-sm btn-secondary" *ngIf="selected.length > 0"><clr-icon shape="close"></clr-icon> Delete</button>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="openEdit()" *ngIf="selected.length > 0"><clr-icon shape="pencil"></clr-icon> Edit</button>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="deleteModal = true" *ngIf="selected.length > 0"><clr-icon shape="close"></clr-icon> Delete</button>
           </div>
           <clr-dropdown class="btn-group-overflow" *ngIf="selected.length > 0 && account.type == 'credit'">
             <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
@@ -20,7 +20,7 @@
                   <clr-icon shape="caret down"></clr-icon>
               </button>
             <clr-dropdown-menu *clrIfOpen>
-              <button type="button" clrDropdownItem *ngFor="let category of categories">{{category.name}}</button>
+              <button type="button" clrDropdownItem (click)="setCategory(category)" *ngFor="let category of categories">{{category.name}}</button>              
             </clr-dropdown-menu>
           </clr-dropdown>
         </clr-dg-action-bar>
@@ -58,3 +58,117 @@
     </section>
   </nav>
 </div>
+
+<clr-modal [(clrModalOpen)]="editModal" [clrModalClosable]="false">
+  <h3 class="modal-title" *ngIf="!editForm.get('id').value">Add transaction</h3>
+  <h3 class="modal-title" *ngIf="editForm.get('id').value">Editing transaction {{editIndex + 1}} of {{selected.length}}</h3>
+  <div class="modal-body" *ngIf="editModal">
+    <form class="compact" [formGroup]="editForm" novalidate>
+      <clr-alert [clrAlertType]="'alert-success'" [(clrAlertClosed)]="!alerts.success">
+        <div class="alert-item">
+          <span class="alert-text">Transaction was saved!</span>
+        </div>
+      </clr-alert>
+      <clr-alert [clrAlertType]="'alert-danger'" [(clrAlertClosed)]="!alerts.error">
+        <div class="alert-item">
+          <span class="alert-text">Could not save transaction!</span>
+        </div>
+      </clr-alert>
+      <section class="form-block">
+        <div class="form-group row">
+          <div class="col-xs-4">Date</div>
+          <div class="col-xs-6">
+            <div class="row" formGroupName="date">
+              <div class="col-xs-3">
+                <div class="select form-control">
+                  <select formControlName="month" (change)="updateDays()">
+                    <option value="">Month</option>
+                      <option [value]="i + 1" *ngFor="let month of months; let i = index;">{{month}}</option>
+                    </select>
+                </div>
+              </div>
+              <div class="col-xs-1">/</div>
+              <div class="col-xs-3">
+                <div class="select form-control">
+                  <select formControlName="day">
+                    <option [value]="day" *ngFor="let day of days">{{day}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-1">/</div>
+              <div class="col-xs-3">
+                <div class="select form-control">
+                  <select formControlName="year">
+                    <option value="">Year</option>
+                    <option [value]="year" *ngFor="let year of years">{{year}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-4">Amount</div>
+          <div class="col-xs-8">
+            <label aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-bottom-left" [class.invalid]="editForm.get('amount').invalid && editForm.get('amount').touched">
+              <input class="form-control" type="text" placeholder="Amount" formControlName="amount">
+              <span class="tooltip-content">You must provide an amount!</span>
+            </label>
+          </div>
+
+          <div class="col-xs-4">Payee</div>
+          <div class="col-xs-8">
+            <label aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-bottom-left" [class.invalid]="editForm.get('payee').invalid && editForm.get('payee').touched">
+              <input class="form-control" type="text" placeholder="Payee" formControlName="payee">
+              <span class="tooltip-content">You must provide a payee!</span>
+            </label>
+          </div>
+
+          <div class="col-xs-4">Category</div>
+          <div class="col-xs-8">
+            <div class="select form-control">
+              <select formControlName="categoryId">
+                <option [value]="category.id" *ngFor="let category of categories">{{category.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-4">Comment</div>
+          <div class="col-xs-8">
+            <input class="form-control" type="text" placeholder="Comment" formControlName="comment">
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="save(true)" [disabled]="editForm.invalid" *ngIf="!editForm.get('id').value"><clr-icon shape="plus"></clr-icon> <clr-icon shape="floppy" class="is-solid"></clr-icon> and Next</button>
+    <button type="button" class="btn btn-primary" (click)="save(false, true)" [disabled]="editForm.invalid" *ngIf="editForm.get('id').value && editIndex > 0 && selected.length > 1"><clr-icon shape="floppy" class="is-solid"></clr-icon> and Previous</button>
+    <button type="button" class="btn btn-primary" (click)="save(true)" [disabled]="editForm.invalid" *ngIf="editForm.get('id').value && editIndex < selected.length - 1 && selected.length > 1"><clr-icon shape="floppy" class="is-solid"></clr-icon> and Next</button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="editForm.invalid"><clr-icon shape="floppy" class="is-solid"></clr-icon> and Close</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="deleteModal" [clrModalClosable]="false">
+  <h3 class="modal-title">Are you sure you want to delete this transaction?</h3>
+  <div class="modal-body">
+    <table class="table table-compact">
+      <thead>
+        <tr>
+          <th class="left">Date</th>
+          <th class="left">Payee</th>
+          <th class="left">Amount</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let item of selected">
+        <td class="left">{{item?.date}}</td>
+        <td class="left">{{item?.payee}}</td>
+        <td class="left">{{item?.amount | currency:'USD':true:'.2'}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-warning" (click)="delete()">Delete</button>
+  </div>
+</clr-modal>
