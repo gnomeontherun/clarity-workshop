@@ -1,13 +1,16 @@
 <div class="login-wrapper">
-  <form class="login">
+  <form class="login" (ngSubmit)="login()" #loginForm="ngForm">
     <label class="title">
           <h3 class="welcome">Welcome to</h3>
           <clr-icon shape="wallet" size="28"></clr-icon> Clarity Ledger
       </label>
     <div class="login-group">
-      <input class="username" name="email" type="email" placeholder="Email">
-      <input class="password" name="password" type="password" placeholder="Password">
-      <button type="submit" class="btn btn-primary">Login</button>
+      <input class="username" name="email" type="email" required placeholder="Email" [(ngModel)]="form.email">
+      <input class="password" name="password" type="password" required placeholder="Password" [(ngModel)]="form.password">
+      <div class="error active" *ngIf="error">
+        {{error.message}}
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
     </div>
   </form>
 </div>

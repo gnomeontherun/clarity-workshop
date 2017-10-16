@@ -10,12 +10,9 @@ import { UserService } from '../services/user/user.service';
 export class HeaderComponent {
   constructor(private router: Router, public userService: UserService) {}
 
-  /**
-   * How to use service to logout
-   */
-  // this.userService.logout().subscribe(() => {
-  //   // Logged out
-  // }, error => {
-  //   // Error logging out
-  // });
+  logout() {
+    this.userService.logout().subscribe(() => {
+      this.router.navigateByUrl('/');
+    });
+  }
 }

@@ -8,17 +8,24 @@ import { User } from '../models/user';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  form = {
+    email: '',
+    password: ''
+  };
+  error = null;
 
   constructor(private router: Router, private userService: UserService) {}
 
-  /**
-   * How to use the service to login
-   */
-  // this.userService.login(email, password).subscribe((user: User) => {
-  //     // Success, you'll get the user object, and it is persisted in localstorage for you
-  //   },
-  //   error => {
-  //     // `error` is an HttpErrorResponse object type
-  //   }
-  // );
+  login() {
+    this.error = null;
+    this.userService.login(this.form.email, this.form.password).subscribe(
+      (user: User) => {
+        this.router.navigateByUrl('/accounts');
+      },
+      error => {
+        this.error = JSON.parse(error.error);
+      }
+    );
+  }
+
 }
