@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="en-US"><head><script>(function(){function init(e,t){waitUntilReady((t||window).prebootData={opts:e,listening:!0,apps:[],listeners:[]})}function waitUntilReady(e,t){((t||window).document||{}).body?start(e):setTimeout(function(){waitUntilReady(e)},10)}function start(e,t){var o=t||window;if(!o.prebootStarted){o.prebootStarted=!0;var r=o.document||{},n=(e.opts||{}).eventSelectors||[];e.overlay=createOverlay(r),getAppRoots(r,e.opts).forEach(function(t){var o={root:t,events:[]};e.apps.push(o),n.forEach(function(t){return handleEvents(e,o,t)})})}}function createOverlay(e){var t=e.createElement("div");return t.setAttribute("id","prebootOverlay"),t.setAttribute("style","display:none;position:absolute;left:0;top:0;width:100%;height:100%;z-index:999999;background:black;opacity:.3"),e.body.appendChild(t),t}function getAppRoots(e,t){var o=[];return t.appRoot&&t.appRoot.length&&[].concat(t.appRoot).forEach(function(e){return o.push({serverSelector:e})}),o.forEach(function(o){o.serverNode=e.querySelector(o.serverSelector),o.clientSelector=o.clientSelector||o.serverSelector,o.clientSelector!==o.serverSelector?o.clientNode=e.querySelector(o.clientSelector):t.buffer?o.clientNode=createBuffer(o):o.clientNode=o.serverNode,o.serverNode||console.log("No server node found for selector: "+o.serverSelector)}),o}function handleEvents(e,t,o){var r=t.root.serverNode;if(r){var n=r.querySelectorAll(o.selector);if(n)for(var i=0,a=n;i<a.length;i++)!function(r){o.events.forEach(function(n){var i=createListenHandler(e,o,t,r);r.addEventListener(n,i),e.listeners.push({node:r,eventName:n,handler:i})})}(a[i])}}function createListenHandler(e,t,o,r){var n=["keyup","keydown","focusin","mouseup","mousedown"],i=["INPUT","TEXTAREA"];return function(a){var c=o.root,l=a.type;if(r&&l){var s=t.keyCodes;if(!s||!s.length||s.filter(function(e){return a.which===e}).length){t.preventDefault&&a.preventDefault(),t.action&&t.action(r,a);var d=getNodeKeyForPreboot({root:c,node:r});if(n.indexOf(l)>=0&&i.indexOf(r.tagName)>=0?e.activeNode={root:c,node:r,nodeKey:d,selection:getSelection(r)}:"change"!==l&&"focusout"!==l&&(e.activeNode=null),t.freeze){var u=e.overlay;u.style.display="block",setTimeout(function(){u.style.display="none"},1e4)}t.noReplay||o.events.push({node:r,nodeKey:d,event:a,name:l})}}}}function getSelection(e){var t=(e=e||{}).value||"",o={start:t.length,end:t.length,direction:"forward"};try{(e.selectionStart||0===e.selectionStart)&&(o.start=e.selectionStart,o.end=e.selectionEnd,o.direction=e.selectionDirection)}catch(e){}return o}function createBuffer(e){var t=e.serverNode;if(!t||!t.parentNode||"html"===e.serverSelector||"body"===e.serverSelector)return t;var o=t.cloneNode(!1);return o&&(o.style.display="none",t.parentNode.insertBefore(o,t)),o}function getNodeKeyForPreboot(e){for(var t=[],o=e.root,r=e.node,n=r;n&&n!==o.serverNode&&n!==o.clientNode;)t.push(n),n=n.parentNode;n&&t.push(n);for(var i=(r.nodeName||"unknown")+"_"+o.serverSelector,a=t.length-1;a>=0;a--)if((n=t[a]).childNodes&&a>0)for(var c=0;c<n.childNodes.length;c++)if(n.childNodes[c]===t[a-1]){i+="_s"+(c+1);break}return i}init({"buffer":true,"minify":true,"eventSelectors":[{"selector":"input,textarea","events":["keypress","keyup","keydown","input","change"]},{"selector":"select,option","events":["change"]},{"selector":"input","events":["keyup"],"preventDefault":true,"keyCodes":[13],"freeze":true},{"selector":"form","events":["submit"],"preventDefault":true,"freeze":true},{"selector":"input,textarea","events":["focusin","focusout","mousedown","mouseup"],"noReplay":true},{"selector":"button","events":["click"],"preventDefault":true,"freeze":true}],"appRoot":"body"})})()</script><!-- Meta --><meta charset="utf-8"><title>Clarity Design System - Community</title><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta content="yes" name="apple-mobile-web-app-capable"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><base href="/"><link rel="shortcut icon" href="favicon.ico" type="image/x-icon"><link rel="icon" href="favicon.ico" type="image/x-icon"><link rel="icon" href="favicon.ico?v=2" type="image/x-icon"><script src="scripts/custom-elements.min.js"></script><script src="scripts/clr-icons.min.js"></script><script src="scripts/prism.js"></script><script src="scripts/prism-typescript.min.js"></script><script type="text/javascript">if (/vmware.github.io/.test(window.location.href)) {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                            (i[r].q = i[r].q || []).push(arguments)
+                        },
+                        i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document,
+                    'script',
+                    'https://www.google-analytics.com/analytics.js',
+                    'ga');
+            ga('create', 'UA-86120402-1', 'auto');
+
+            window["trackIconSearch"] = function (searchedIcon, numberOfMatches) {
+                ga('send', 'event', 'icon-search', 'input', searchedIcon, numberOfMatches);
+            }
+
+        }</script><link href="styles.6b782d17c443e5705106.bundle.css" rel="stylesheet"></head><body id="body"><root ng-version="5.0.0" class="layout-community"><clr-main-container class="main-container">
+    <clr-header class="header-6 header">
+        <!----><button class="header-hamburger-trigger" type="button">
+            <span></span>
+        </button>
+        
+        <div class="branding">
+            <a class="logo-and-title" routerlink="/" href="/">
+                <span class="clr-icon clarity-logo"></span>
+                <span class="title">Project Clarity</span>
+            </a>
+        </div>
+        <div class="divider"></div>
+        <div class="header-nav clr-nav-level-1">
+            <a class="nav-link" id="home-link" routerlink="/" routerlinkactive="active" href="/"><span class="nav-text">Home</span></a>
+            
+            <a class="nav-link" routerlink="/documentation" routerlinkactive="active" href="/documentation"><span class="nav-text">Documentation</span></a>
+            <a class="nav-link" routerlink="/icons" routerlinkactive="active" href="/icons"><span class="nav-text">Icons</span></a>
+            <a class="nav-link active" routerlink="/community" routerlinkactive="active" href="/community"><span class="nav-text">Community</span></a>
+            <a class="nav-link" routerlink="/news" routerlinkactive="active" href="/news"><span class="nav-text">What's New</span></a>
+        </div>
+        <div class="settings">
+            
+            <iframe class="github-btn" frameborder="0" height="20px" scrolling="0" src="https://ghbtns.com/github-btn.html?user=vmware&amp;repo=clarity&amp;type=star&amp;count=true" width="170px"></iframe>
+        </div>
+    
+        <!---->
+        <div class="header-backdrop"></div>
+    </clr-header>
+
+    <router-outlet></router-outlet><community class="content-container"><main class="content-area">
+    <section class="community-top-section">
+        <h1 id="community">Community</h1>
+
+        <p>We’re passionate about making Clarity the best it can be.&nbsp;Although each team member has a specific role and area of responsibility, we’re all actively engaged in every aspect of the framework.</p>
+
+    </section>
+
+    <section class="community-social-cards">
+        <h3>Engaging with the Clarity Team</h3>
+
+        <div class="hidden-sm-up">
+            <ul class="list-unstyled indent bump-down">
+
+                <li><a href="https://twitter.com/VMwareClarity" target="_blank">Talk with us on Twitter</a></li>
+
+                <li><a href="https://github.com/vmware/clarity/issues" target="_blank">Report an issue</a></li>
+
+                <li><a href="https://medium.com/claritydesignsystem" target="_blank">Read our blog</a></li>
+
+            </ul>
+        </div>
+        <div class="hidden-xs-down row">
+
+            <div class="col-lg-3 so-icon.pngcol-md-6 col-sm-6">
+                <a class="social-card social-card-github" href="https://github.com/vmware/clarity/issues" target="_blank">
+                    <div class="card clickable">
+                        <div class="card-block">
+                            <div class="community-social-icon">
+                                <img alt="github" src="assets/images/team/social/github.png">
+                            </div>
+                            <p class="card-text">File a request/bug</p>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <a class="social-card social-card-stackoverflow" href="https://stackoverflow.com/tags/vmware-clarity" target="_blank">
+                    <div class="card clickable">
+                        <div class="card-block">
+                            <div class="community-social-icon">
+                                <img alt="twitter" src="assets/images/team/social/stackoverflow.png">
+                            </div>
+                            <p class="card-text">Ask a question</p>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <a class="social-card social-card-twitter" href="https://twitter.com/VMwareClarity" target="_blank">
+                    <div class="card clickable">
+                        <div class="card-block">
+                            <div class="community-social-icon">
+                                <img alt="twitter" src="assets/images/team/social/twitter.png">
+                            </div>
+                            <p class="card-text">Chat with us</p>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <a class="social-card social-card-medium" href="https://medium.com/claritydesignsystem" target="_blank">
+                    <div class="card clickable">
+                        <div class="card-block">
+                            <div class="community-social-icon">
+                                <img alt="medium" src="assets/images/team/social/medium.png">
+                            </div>
+                            <p class="card-text">Read our blog</p>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="community-team-cards">
+        <h3>Clarity Team</h3>
+
+        <div class="row">
+            <!----><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/affonehj.png" alt="Picture of Jehad Affoneh">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/jaffoneh">Jehad Affoneh</a>
+                        </p>
+                        <p class="community-team-role">Clarity Lead</p>
+                        <p class="community-team-blurb">Jehad started and continues to lead the Clarity project. He is involved in all stages of Clarity development. He loves engaging with designers and developers to understand their use cases and help them build solutions.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/scott.png" alt="Picture of Scott Mathis">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!----><span>Scott Mathis</span>
+                            <!---->
+                        </p>
+                        <p class="community-team-role">Developer/Researcher</p>
+                        <p class="community-team-blurb">Scott contributes to the look and feel of Clarity and works on the code.&nbsp;Scott's our ace researcher and storyteller.&nbsp;He has captured the stories of why we did what we did and the assumptions we've made.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/eudes.png" alt="Picture of Eudes Petonnet-Vincent">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/EudesPV">Eudes Petonnet-Vincent</a>
+                        </p>
+                        <p class="community-team-role">clarityNG Lead</p>
+                        <p class="community-team-blurb">Eudes is the technical lead for Clarity. He spends most of his day working on the overall architecture of clarity-angular as well as building Angular components for Clarity.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/yen.png" alt="Picture of Yen Ma">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!----><span>Yen Ma</span>
+                            <!---->
+                        </p>
+                        <p class="community-team-role">Designer</p>
+                        <p class="community-team-blurb">Yen is focused on all things design for Clarity. She is passionate about exploring new ways to improve and create enjoyable experiences and is a strong advocate for clean, modern, and easy to use products.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/adityab.png" alt="Picture of Aditya Bhandari">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/adityarb">Aditya Bhandari</a>
+                        </p>
+                        <p class="community-team-role">Developer</p>
+                        <p class="community-team-blurb">Aditya implements clarityUI and Angular components. He often provides feedback and explorations on interactions.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/jeeyun.png" alt="Picture of Jeeyun Lim">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/jeeyunit">Jeeyun Lim</a>
+                        </p>
+                        <p class="community-team-role">Developer</p>
+                        <p class="community-team-blurb">Jeeyun is working on clarityCORE, which encompasses various tools for building, developing, and shipping Clarity. She's also creating Clarity's Angular components and making sure that the components are beautiful as well as sensible and functional.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/red.png" alt="Picture of Red Dolan">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/reddolan">Red Dolan</a>
+                        </p>
+                        <p class="community-team-role">Designer</p>
+                        <p class="community-team-blurb">Red works on strategy and design interactions for Clarity. He also researches user-driven needs and tests those solutions. Contact him for any Sketch template or UX-related questions or feedback.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/lilia.png" alt="Picture of Lilia Kim">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/lilkim439">Lilia Kim</a>
+                        </p>
+                        <p class="community-team-role">Visual Designer</p>
+                        <p class="community-team-blurb">Lilia researches what's needed for Clarity and delivers the visual designs.&nbsp; She works on layout design, component design, and icons.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/shijir.png" alt="Picture of Shijir Tsogoo">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/ts_shijir">Shijir Tsogoo</a>
+                        </p>
+                        <p class="community-team-role">Developer</p>
+                        <p class="community-team-blurb">Shijir recently graduated from the University of Washington. He creates Angular components for Clarity.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/matt.png" alt="Picture of Matt Hippely">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/hippeelee">Matt Hippely</a>
+                        </p>
+                        <p class="community-team-role">Developer</p>
+                        <p class="community-team-blurb">As a UI Engineer, Matt's primary focus is collecting feedback and improving components. He is passionate about simple, intuitive user interfaces and incremental improvement.</p>
+                    </div>
+                </div>
+            </div><div class="card col-xs-12 col-sm-12 col-md-4">
+                <div class="card-block">
+
+                    <img src="assets/images/team/jeremy.png" alt="Picture of Jeremy Wilken">
+
+                    <div class="card-text">
+                        <p class="community-team-name">
+                            <!---->
+                            <!----><a target="_blank" href="https://twitter.com/gnomeontherun">Jeremy Wilken</a>
+                        </p>
+                        <p class="community-team-role">Developer</p>
+                        <p class="community-team-blurb">Jeremy is a developer with a passion for all things web and education. He is a Google Developer Expert for Angular, author of the books Angular in Action and Ionic in Action, and regularly speaks at events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="community-contributors">
+        <h3>Contributors</h3>
+        <ul class="list-unstyled">
+            <!----><li>Rob Patten</li><li>Gail Chappell</li><li>Etienne Le Sueur</li><li>Victor Mejia</li><li>Chris Ha</li><li>Benjamin Richard</li><li>Robert Pamfile</li><li>Ioan Ungurean</li><li>Yu Xin</li><li>Roy Ling</li><li>Ivan Donchev</li><li>Yan Yixing</li><li>Clement Cureau</li><li>Pratheek Hegde</li><li>Cotton Hou</li><li>Srinivas Padidapelli</li><li>Nivedita Chandra</li><li>Alex Mellnik</li><li>Gerin Jacob</li><li>Seven Lju</li><li>Denis Beklarov</li><li>Bojan Djurdjevic</li><li>Mincho Tonev</li><li>Frank Sheiness</li><li>Brian Duncan</li><li>Govinda Alwani</li>
+        </ul>
+    </section>
+
+</main>
+</community>
+
+</clr-main-container>
+</root><script type="text/javascript" src="inline.fa7c338648043884f056.bundle.js"></script><script type="text/javascript" src="polyfills.f706d3bf723a412f1398.bundle.js"></script><script type="text/javascript" src="main.aaf1afcd3aedccd8c573.bundle.js"></script></body></html>
